@@ -6,7 +6,7 @@ static void	send_sig(int sig, int pid)
 	{
 		if (kill(pid, SIGUSR2))
 		{
-			ft_putstr_fd("kill() error", 2);
+			ft_putstr_fd("kill() error\n", 2);
 			exit(1);
 		}
 	}
@@ -14,14 +14,15 @@ static void	send_sig(int sig, int pid)
 	{
 		if (kill(pid, SIGUSR1))
 		{
-			ft_putstr_fd("kill() error", 2);
+			ft_putstr_fd("kill() error\n", 2);
 			exit(1);
 		}
 	}
-	pause();
+	while (!received_sig(0))
+		;
 }
 
-static int	which_sig(char *c, int nbr)
+static int	which_sig(unsigned char *c, int nbr)
 {
 	if (*c >= nbr)
 	{
@@ -31,7 +32,7 @@ static int	which_sig(char *c, int nbr)
 	return (0);
 }
 
-static void	send_char(char c, int pid)
+static void	send_char(unsigned char c, int pid)
 {
 	send_sig(which_sig(&c, 128), pid);
 	send_sig(which_sig(&c, 64), pid);
@@ -43,7 +44,7 @@ static void	send_char(char c, int pid)
 	send_sig(which_sig(&c, 1), pid);
 }
 
-static void	send(char *str, int pid)
+void	send(char *str, int pid)
 {
 	size_t	i;
 
@@ -53,21 +54,5 @@ static void	send(char *str, int pid)
 		send_char(str[i], pid);
 		i++;
 	}
-}
-
-static void test()
-{
-	;
-}
-
-int	main(int argc, char *argv[])
-{
-	if (argc != 3)
-	{
-		ft_putstr_fd("arg error", 2);
-		return (1);
-	}
-	signal(SIGUSR2, &test);
-	send(argv[2], ft_atoi(argv[1]));
-	return (0);
+	send_char('\0', pid);
 }

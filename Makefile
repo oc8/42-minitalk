@@ -2,13 +2,16 @@ NAME			= minitalk
 NAME1			= server
 NAME2			= client
 LST1			= \
-	main.c
+	server.c \
+	send.c
 LST2			= \
-	main.c
+	client.c \
+	send.c
 LST_SRCS		= \
 	utils/write.c \
 	utils/memory.c \
-	utils/convertion.c
+	utils/convertion.c \
+	utils/math.c
 LST_SRCS1		= $(addprefix $(NAME1)/,$(LST1))
 LST_SRCS2		= $(addprefix $(NAME2)/,$(LST2))
 SRCS_DIR		= srcs
@@ -17,10 +20,7 @@ OBJS			= $(LST_SRCS:%.c=$(OBJS_DIR)/%.o)
 OBJS1			= $(LST_SRCS1:%.c=$(OBJS_DIR)/%.o)
 OBJS2			= $(LST_SRCS2:%.c=$(OBJS_DIR)/%.o)
 CC				= clang
-# CFLAGS			= -Wall -Werror -Wextra
-CFLAGS			= -g
-# CFLAGS			= -Wall -Werror -Wextra -fsanitize=address -g3
-# CFLAGS			= -fsanitize=address -g3
+CFLAGS			= -Wall -Werror -Wextra
 INCLUDE			= -Iinc
 RM				= rm -rf
 MKDIR			= mkdir -p
