@@ -20,8 +20,9 @@ OBJS			= $(LST_SRCS:%.c=$(OBJS_DIR)/%.o)
 OBJS1			= $(LST_SRCS1:%.c=$(OBJS_DIR)/%.o)
 OBJS2			= $(LST_SRCS2:%.c=$(OBJS_DIR)/%.o)
 CC				= clang
-CFLAGS			= -Wall -Werror -Wextra
-INCLUDE			= -Iinc
+FLAGS			= -Wall -Werror -Wextra
+CFLAGS			= -Iinc
+INCLUDE			= ./inc/*.h
 RM				= rm -rf
 MKDIR			= mkdir -p
 
@@ -31,23 +32,23 @@ $(OBJS_DIR):
 				$(MKDIR) $@
 
 $(NAME1):		${OBJS_DIR} ${OBJS1} $(OBJS)
-				${CC} ${CFLAGS} ${INCLUDE} ${OBJS1} $(OBJS) -o ${NAME1}
+				${CC} ${FLAGS} ${CFLAGS} ${OBJS1} $(OBJS) -o ${NAME1}
 				echo "$(BOLD)${GREEN}$(ERASE)--> ${NAME1} generated <--${END}"
 
 $(NAME2):		${OBJS_DIR} ${OBJS2} $(OBJS)
-				${CC} ${CFLAGS} ${INCLUDE} ${OBJS2} $(OBJS) -o ${NAME2}
+				${CC} ${FLAGS} ${CFLAGS} ${OBJS2} $(OBJS) -o ${NAME2}
 				echo "$(BOLD)${GREEN}$(ERASE)--> ${NAME2} generated <--${END}"
 
 ${NAME}:		${OBJS_DIR} ${OBJS1} ${OBJS2} $(OBJS)
-				${CC} ${CFLAGS} ${INCLUDE} ${OBJS1} $(OBJS) -o ${NAME1}
-				${CC} ${CFLAGS} ${INCLUDE} ${OBJS2} $(OBJS) -o ${NAME2}
+				${CC} ${FLAGS} ${CFLAGS} ${OBJS1} $(OBJS) -o ${NAME1}
+				${CC} ${FLAGS} ${CFLAGS} ${OBJS2} $(OBJS) -o ${NAME2}
 				echo "$(BOLD)${GREEN}$(ERASE)--> ${NAME1} generated <--${END}"
 				echo "$(BOLD)${GREEN}$(ERASE)--> ${NAME2} generated <--${END}"
 				echo "$(BOLD)${GREEN}$(ERASE)--> ${NAME} ready <--${END}"
 
-$(OBJS_DIR)/%.o:$(SRCS_DIR)/%.c inc/*.h
+$(OBJS_DIR)/%.o:$(SRCS_DIR)/%.c inc/*.h $(INCLUDE)
 				$(MKDIR) $(dir $@)
-				${CC} ${CFLAGS} $(INCLUDE) -c  $< -o $@
+				${CC} ${FLAGS} $(CFLAGS) -c  $< -o $@
 				printf "$(ERASE)--> [$(GREEN)$<$(END)] <--"
 
 clean:
